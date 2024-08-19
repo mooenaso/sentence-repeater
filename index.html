@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sentence Repeater</title>
+    <title>Sentence Repeater with Image Upload, Resize, and Move</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Open+Sans:wght@300;400;600&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -59,6 +60,21 @@
             font-size: 12px;
             color: #555;
         }
+        #imageContainer {
+            margin-top: 20px;
+            position: relative;
+        }
+        #imagePreview {
+            max-width: 100%;
+            display: none;
+            position: absolute;
+            cursor: move;
+        }
+        #imageSizeDisplay {
+            text-align: right;
+            font-size: 12px;
+            color: #555;
+        }
     </style>
 </head>
 <body>
@@ -66,7 +82,7 @@
     <div id="controls">
         <div id="foldButton" onclick="toggleFold()">&#10094;</div>
         <label for="sentence">Write Sentence:</label>
-        <input type="text" id="sentence" value="Hello World!">
+        <input type="text" id="sentence" value="The quick, brown fox jumps over the lazy dog, swiftly maneuvering through the tall grass as the sun sets on the horizon, casting long, wavering shadows that dance across the landscape, creating an intricate interplay of light and darkness, which, though captivating, may challenge one's focus and clarity, illustrating the delicate balance between complexity and comprehension in the realm of written expression.">
 
         <label for="rows">Row Multiplier:</label>
         <input type="number" id="rows" value="1" min="1">
@@ -85,12 +101,26 @@
             <option value="Georgia">Georgia</option>
             <option value="Times New Roman">Times New Roman</option>
             <option value="Verdana">Verdana</option>
+            <option value="'Roboto', sans-serif">Roboto</option>
+            <option value="'Lobster', cursive">Lobster</option>
+            <option value="'Open Sans', sans-serif">Open Sans</option>
         </select>
 
         <button onclick="generateOutput()">Generate</button>
+
+        <label for="imageUpload">Upload Image:</label>
+        <input type="file" id="imageUpload" accept="image/*" onchange="loadImage()">
+
+        <label for="imageSize">Image Size:</label>
+        <input type="range" id="imageSize" min="10" max="1000" value="300" oninput="resizeImage();">
+        <div id="imageSizeDisplay">Image Size: 300px</div>
     </div>
 
     <div id="output"></div>
+
+    <div id="imageContainer">
+        <img id="imagePreview" alt="Uploaded Image">
+    </div>
 
     <script>
         function toggleFold() {
@@ -117,6 +147,57 @@
             }
 
             document.getElementById('output').textContent = output;
+        }
+
+        function loadImage() {
+            const file = document.getElementById('imageUpload').files[0];
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                const image = document.getElementById('imagePreview');
+                image.src = e.target.result;
+                image.style.display = 'block';
+                resizeImage(); // Adjust size to initial value
+                enableImageDragging(image); // Enable dragging
+            }
+
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function resizeImage() {
+            const imageSize = document.getElementById('imageSize').value;
+            const image = document.getElementById('imagePreview');
+            image.style.width = imageSize + 'px';
+            document.getElementById('imageSizeDisplay').textContent = 'Image Size: ' + imageSize + 'px';
+        }
+
+        function enableImageDragging(image) {
+            let posX = 0, posY = 0, mouseX = 0, mouseY = 0;
+
+            image.onmousedown = function(e) {
+                e.preventDefault();
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                document.onmouseup = closeDragImage;
+                document.onmousemove = imageDrag;
+            };
+
+            function imageDrag(e) {
+                e.preventDefault();
+                posX = mouseX - e.clientX;
+                posY = mouseY - e.clientY;
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                image.style.top = (image.offsetTop - posY) + "px";
+                image.style.left = (image.offsetLeft - posX) + "px";
+            }
+
+            function closeDragImage() {
+                document.onmouseup = null;
+                document.onmousemove = null;
+            }
         }
     </script>
 
