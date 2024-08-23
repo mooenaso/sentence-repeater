@@ -68,9 +68,13 @@
         }
         #imagePreview {
             max-width: 100%;
+            max-height: 100%;
             display: none;
             position: absolute;
             cursor: move;
+            transform: translate(-50%, -50%);
+            top: 50%;
+            left: 50%;
         }
         .category-label {
             font-weight: bold;
@@ -192,7 +196,6 @@
         <div class="category-label" onclick="toggleCategory('textEvaluation')">Text Evaluation</div>
         <div id="textEvaluation" class="collapsible-content">
             <label><input type="checkbox" name="imageSelector" value="https://github.com/mooenaso/sentence-repeater/blob/main/data/Gen2_deg1.0_blur0.01_ppd60_idx3.png?raw=true" onclick="showImage(this)"> Text Image 1</label>
-            <!-- Add more text evaluation images here -->
         </div>
 
         <label for="imageSize">Image Size:</label>
@@ -202,9 +205,7 @@
 
     <div id="output"></div>
 
-    <div id="imageContainer">
-        <img id="imagePreview" alt="Projected Image">
-    </div>
+    <img id="imagePreview" alt="Projected Image">
 
     <script>
         function toggleFold() {
@@ -257,7 +258,6 @@
                 imagePreview.src = checkbox.value;
                 imagePreview.style.display = 'block';
                 imagePreview.style.width = imageSize + 'px';
-                centerImage(imagePreview);
             } else {
                 imagePreview.style.display = 'none';
             }
@@ -296,21 +296,6 @@
             const image = document.getElementById('imagePreview');
             image.style.width = imageSize + 'px';
             document.getElementById('imageSizeDisplay').textContent = 'Image Size: ' + imageSize + 'px';
-            centerImage(image);
-        }
-
-        function centerImage(image) {
-            const container = document.getElementById('imageContainer');
-            const containerWidth = container.clientWidth;
-            const containerHeight = container.clientHeight;
-            const imageWidth = image.clientWidth;
-            const imageHeight = image.clientHeight;
-
-            const leftOffset = (containerWidth - imageWidth) / 2;
-            const topOffset = (containerHeight - imageHeight) / 2;
-
-            image.style.left = leftOffset + 'px';
-            image.style.top = topOffset + 'px';
         }
 
         function toggleCategory(categoryId) {
