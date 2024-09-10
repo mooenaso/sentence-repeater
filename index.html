@@ -126,6 +126,9 @@
 
         <button onclick="generateOutput()">Generate</button>
 
+        <label for="inverseColors">Inverse Colors:</label>
+        <input type="checkbox" id="inverseColors" onchange="toggleInverseColors();">
+
         <label for="imageUpload">Upload Image:</label>
         <input type="file" id="imageUpload" accept="image/*" onchange="loadImage()">
 
@@ -298,6 +301,19 @@
             const category = document.getElementById(categoryId);
             const isVisible = category.style.display === 'block';
             category.style.display = isVisible ? 'none' : 'block';
+        }
+
+        function toggleInverseColors() {
+            const isChecked = document.getElementById('inverseColors').checked;
+            if (isChecked) {
+                document.body.style.backgroundColor = 'black';
+                document.body.style.color = 'white';
+                document.getElementById('output').style.color = 'white';
+            } else {
+                document.body.style.backgroundColor = 'white';
+                document.body.style.color = 'black';
+                document.getElementById('output').style.color = 'black';
+            }
         }
 
         function enableImageDragging(image) {
