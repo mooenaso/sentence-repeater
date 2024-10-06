@@ -56,8 +56,10 @@
             padding: 10px;
             font-size: 18px;
             font-family: Roboto, sans-serif;
+            /* Default blur */
+            filter: blur(0px);
         }
-        #fontSizeDisplay, #lineSpacingDisplay, #imageSizeDisplay {
+        #fontSizeDisplay, #lineSpacingDisplay, #imageSizeDisplay, #fontWeightDisplay, #blurDisplay { /* Updated */
             text-align: right;
             font-size: 12px;
             color: #555;
@@ -113,7 +115,7 @@
         <div id="lineSpacingDisplay">Line Spacing: 1.6</div>
 
         <label for="fontType">Font Type:</label>
-        <select id="fontType" onchange="document.getElementById('output').style.fontFamily = this.value;">
+        <select id="fontType" onchange="updateFontType();">
             <option value="'Roboto', sans-serif">Roboto</option>
             <option value="Arial">Arial</option>
             <option value="Courier New">Courier New</option>
@@ -123,6 +125,18 @@
             <option value="'Lobster', cursive">Lobster</option>
             <option value="'Open Sans', sans-serif">Open Sans</option>
         </select>
+
+        <!-- Font Weight Control -->
+        <label for="fontWeight">Font Weight:</label>
+        <input type="range" id="fontWeight" min="100" max="900" step="100" value="400" oninput="updateFontWeight();">
+        <div id="fontWeightDisplay">Font Weight: 400</div>
+        <!-- End of Font Weight Control -->
+
+        <!-- New Blur Control -->
+        <label for="blur">Blur:</label>
+        <input type="range" id="blur" min="0" max="10" step="0.1" value="0" oninput="updateBlur();">
+        <div id="blurDisplay">Blur: 0px</div>
+        <!-- End of Blur Control -->
 
         <button onclick="generateOutput()">Generate</button>
 
@@ -227,6 +241,27 @@
             document.getElementById('output').style.lineHeight = lineSpacing;
             document.getElementById('lineSpacingDisplay').textContent = 'Line Spacing: ' + lineSpacing;
         }
+
+        function updateFontType() {
+            const fontType = document.getElementById('fontType').value;
+            document.getElementById('output').style.fontFamily = fontType;
+        }
+
+        // Font Weight Function
+        function updateFontWeight() {
+            const fontWeight = document.getElementById('fontWeight').value;
+            document.getElementById('output').style.fontWeight = fontWeight;
+            document.getElementById('fontWeightDisplay').textContent = 'Font Weight: ' + fontWeight;
+        }
+        // End of Font Weight Function
+
+        // New Blur Function
+        function updateBlur() {
+            const blurValue = document.getElementById('blur').value;
+            document.getElementById('output').style.filter = `blur(${blurValue}px)`;
+            document.getElementById('blurDisplay').textContent = 'Blur: ' + blurValue + 'px';
+        }
+        // End of Blur Function
 
         function generateOutput() {
             const sentence = document.getElementById('sentence').value;
