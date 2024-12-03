@@ -54,7 +54,7 @@
             white-space: pre-wrap;
             margin-top: 20px;
             padding: 10px;
-            font-size: 18px;
+            font-size: 10pt;
             font-family: Roboto, sans-serif;
             /* Default blur */
             filter: blur(0px);
@@ -104,8 +104,8 @@
         <input type="number" id="columns" value="700" min="1">
 
         <label for="fontSize">Font Size:</label>
-        <input type="range" id="fontSize" min="10" max="100" value="10" oninput="updateFontSize();">
-        <div id="fontSizeDisplay">Font Size: 10px</div>
+        <input type="range" id="fontSize" min="5" max="40" value="10" oninput="updateFontSize();">
+        <div id="fontSizeDisplay">Font Size: 10pt</div>
 
         <label for="usePt">Use pt instead of px:</label>
         <input type="checkbox" id="usePt" onchange="updateFontSize();"checked>
@@ -138,7 +138,7 @@
         <div id="blurDisplay">Blur: 0px</div>
         <!-- End of Blur Control -->
 
-        <button onclick="generateOutput()">Generate</button>
+        <button id="generateButton" onclick="generateOutput()">Generate</button>
 
         <label for="inverseColors">Inverse Colors:</label>
         <input type="checkbox" id="inverseColors" onchange="toggleInverseColors();">
@@ -387,7 +387,7 @@
         window.onload = function() {
             document.getElementById("generateButton").click();
         };
-    </script>    
+    </script>
 
 </body>
 </html>
